@@ -697,23 +697,29 @@ class EasyMultiApp(tk.Tk):
         # < 1.7.10, no atum
         elif version_major == 0 or 7 > version_major > 3:
             time.sleep(0.07)
-            pause = 0.1
-            for i in range(2):
-                keyboard.press_and_release("tab")
-                keyboard.press_and_release("enter")
-                time.sleep(pause)
+            pause = 0.07
+            # exit world
+            keyboard.press_and_release("tab")
+            keyboard.press_and_release("enter")
+            # 0.07 is too little here, not sure why
+            # this is prob. hardware dependent
+            time.sleep(.1)
 
+            # enter singleplayer
+            keyboard.press_and_release("tab")
+            keyboard.press_and_release("enter")
+            time.sleep(pause)
+
+            # clicks new world
             for i in range(5):
                 keyboard.press_and_release("tab")
             keyboard.press_and_release("enter")
             time.sleep(pause)
 
+            # hover over create
             keyboard.press_and_release("tab")
         else:
-            self._log("")
-
-
-
+            self._log("Instance not supported")
         keyboard.press_and_release("enter")
 
     def _hide_keypress(self) -> None:
