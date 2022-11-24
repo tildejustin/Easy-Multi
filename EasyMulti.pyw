@@ -664,25 +664,39 @@ class EasyMultiApp(tk.Tk):
         keyboard.press_and_release("esc")
 
     def _reset_world(self, window_to_reset: Window) -> None:
+        """Resetting key input logic"""
         # Assumes window is active
         version_major: int = 16
-        version_minor: int = 1
+        # if no minor version default to 0
+        version_minor: int = 0
         try:
             dot_split = window_to_reset.get_original_title().split(".")
             version_major = int(dot_split[1])
             version_minor = int(dot_split[2].split(" ")[0])
         except:
             pass
+        # pauses the game
         keyboard.press_and_release("esc")
+        # 1.13+
         if version_major > 12:
             keyboard.press_and_release("shift+tab")
-        elif version_major == 8 and version_minor == 9:
-            time.sleep(0.07)  # Uh oh magic number
-            for i in range(7):
-                keyboard.press_and_release("tab")
-        else:
+        # 1.9-1.12
+        elif version_major > 9:
             time.sleep(0.07)  # Uh oh magic number
             keyboard.press_and_release("tab")
+        # 1.8.9
+        # no shift tab?
+        elif version_major == 8 and version_minor == 9:
+            time.sleep(0.07)
+            for i in range(7):
+                keyboard.press_and_release("tab")
+        # 1.8.!9, 1.7.10
+        elif version_major == 8 or (version_major == 7 and version_minor == 10):
+            time.sleep(0.07)  # Uh oh magic number
+            keyboard.press_and_release("tab")
+        # < 1.7.10, no atum
+        else:
+            pass
         keyboard.press_and_release("enter")
 
     def _hide_keypress(self) -> None:
