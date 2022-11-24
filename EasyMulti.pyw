@@ -85,8 +85,8 @@ class EasyMultiApp(tk.Tk):
 
         self.title("Easy Multi v" + VERSION)
         self.resizable(0, 0)
-        if USE_ICON:
-            self.iconbitmap(resource_path("EasyMulti.ico"))
+        # if USE_ICON:
+        #     self.iconbitmap(resource_path("EasyMulti.ico"))
         self.protocol("WM_DELETE_WINDOW", self._exit)
 
         # App Stuff
