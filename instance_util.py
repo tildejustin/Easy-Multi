@@ -5,7 +5,8 @@ from tkinter import filedialog as tkFileDialog
 from typing import Callable, List, Union
 
 
-NEW_WORLD_RE = r"^New World( \(\d+\))?$"
+# NEW_WORLD_RE = r"^New World( \(\d+\))?$"
+NEW_WORLD_RE = r"^New World.*$"
 RSPEEDRUN_RE = r"^Random ?Speedrun #\d+( \(\d+\))?$"
 SSPEEDRUN_RE = r"^Set ?Speedrun #\d+( \(\d+\))?$"
 SPEEDRUN_RE = r"^Speedrun #\d+( \(\d+\))?$"

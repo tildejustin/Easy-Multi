@@ -666,7 +666,7 @@ class EasyMultiApp(tk.Tk):
     def _reset_world(self, window_to_reset: Window) -> None:
         """Resetting key input logic"""
         # Assumes window is active
-        version_major: int = 16
+        version_major: int = 0
         # if no minor version default to 0
         version_minor: int = 0
         try:
@@ -695,8 +695,25 @@ class EasyMultiApp(tk.Tk):
             time.sleep(0.07)  # Uh oh magic number
             keyboard.press_and_release("tab")
         # < 1.7.10, no atum
+        elif version_major == 0 or 7 > version_major > 3:
+            time.sleep(0.07)
+            pause = 0.1
+            for i in range(2):
+                keyboard.press_and_release("tab")
+                keyboard.press_and_release("enter")
+                time.sleep(pause)
+
+            for i in range(5):
+                keyboard.press_and_release("tab")
+            keyboard.press_and_release("enter")
+            time.sleep(pause)
+
+            keyboard.press_and_release("tab")
         else:
-            pass
+            self._log("")
+
+
+
         keyboard.press_and_release("enter")
 
     def _hide_keypress(self) -> None:
