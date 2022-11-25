@@ -24,6 +24,6 @@ jobs:
     - name: release
       uses: softprops/action-gh-release@v1
       with:
-        files: /home/runner/work/Easy-Multi/Easy-Multi/dist/EasyMulti.exe
+        files: dist/EasyMulti.exe
         draft: true
         
