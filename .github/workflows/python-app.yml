@@ -24,6 +24,6 @@ jobs:
     - name: release
       uses: softprops/action-gh-release@v1
       with:
-        files: dist/EasyMulti.exe
+        files: ${{ github.workspace }}/dist/EasyMulti.exe
         draft: true
         
