@@ -6,9 +6,11 @@
 ## Todo
 - Check compatatility with other mc versions (1.11.2, 1.8, 1.5)
 - Change some branding so the new version is dicernable from the old version
+  - I was thinking ModerateMulti, but it sounds terrible so idk
 
 ## Issues
-- If mc lags, there is a good chance the script will hit the quit button on the mc title screen. I can minimize this by waiting a bit after closing a world, but if your computer is laggy it might have to be slowed down more. I plan to add a setting in options.json to accomodate this, so tell me if you have this issue. FIXED
-- Tell me if you have any other issues
+- Tell me if you have issues
 
 tildejustin#4317
+
+Set up video may come sometime soon
