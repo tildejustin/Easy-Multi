@@ -20,10 +20,11 @@ jobs:
     - name: run build
       run: |
         pyinstaller --onefile EasyMulti.pyw
+        cd dist
         ls
     - name: release
       uses: softprops/action-gh-release@v1
       with:
-        files: ${{ github.workspace }}/dist/EasyMulti.exe
+        files: dist/EasyMulti.exe
         draft: true
         
