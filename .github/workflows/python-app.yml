@@ -22,3 +22,9 @@ jobs:
     - name: run build
       run: |
         pyinstaller --onefile EasyMulti.pyw
+    - name: release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: /dist/EasyMulti.exe
+        draft: true
+        
