@@ -3,15 +3,10 @@ name: Python application
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
-permissions:
-  contents: read
+  workflow_dispatch:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -23,7 +18,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pywin32 clipboard global_hotkeys keyboard pyinstaller
+        python -m pip install pyinstaller
     - name: run build
       run: |
         pyinstaller --onefile EasyMulti.pyw
