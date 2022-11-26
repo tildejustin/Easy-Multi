@@ -45,7 +45,7 @@ except:
     exit()
 
 
-VERSION = "1.5.3"
+VERSION = "0.0.3"
 
 
 def resource_path(relative_path):
@@ -564,8 +564,8 @@ class EasyMultiApp(tk.Tk):
             window_size_tl = tk.Toplevel(self)
             window_size_tl.resizable(0, 0)
             window_size_tl.title("Change Instance Window Size")
-            if USE_ICON:
-                window_size_tl.iconbitmap(resource_path("EasyMulti.ico"))
+            # if USE_ICON:
+            #     window_size_tl.iconbitmap(resource_path("EasyMulti.ico"))
 
             def exit_wst():
                 self._changing_something = False
