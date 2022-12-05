@@ -45,7 +45,7 @@ except:
     exit()
 
 
-VERSION = "0.0.4"
+VERSION = "0.0.5"
 
 
 def resource_path(relative_path):
