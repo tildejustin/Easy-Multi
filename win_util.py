@@ -50,10 +50,15 @@ def get_all_hwnds() -> List[int]:
 
 def get_all_mc_hwnds(old_hwnds=[]) -> List[int]:
     hwnds = []
-    mc_match = re.compile(
-        r"^Minecraft\*? 1\.[1-9]\d*(\.[1-9]\d*)?( .*)?$").match
+    mc_match = re.compile(r"^Minecraft\*? 1\.[1-9]\d*(\.[1-9]\d*)?( .*)?$").match
+    multimc_match = re.compile(r"MultiMC: 1.\d{1,2}.\d").match
     for hwnd in get_all_hwnds():
-        if hwnd in old_hwnds or mc_match(get_hwnd_title(hwnd)) or get_hwnd_title(hwnd) == "Minecraft":
+        if (
+            hwnd in old_hwnds
+            or mc_match(get_hwnd_title(hwnd))
+            or multimc_match(get_hwnd_title(hwnd))
+            or get_hwnd_title(hwnd) == "Minecraft"
+        ):
             hwnds.append(hwnd)
     return hwnds
 
@@ -79,18 +84,37 @@ def restore_hwnd(hwnd: int) -> None:
 def set_hwnd_borderless(hwnd: int, window_size=(1920, 1080)) -> None:
     restore_hwnd(hwnd)
     style = get_hwnd_style(hwnd)
-    style &= ~(win32con.WS_BORDER | win32con.WS_DLGFRAME | win32con.WS_THICKFRAME |
-               win32con.WS_MINIMIZEBOX | win32con.WS_MAXIMIZEBOX | win32con.WS_SYSMENU)
+    style &= ~(
+        win32con.WS_BORDER
+        | win32con.WS_DLGFRAME
+        | win32con.WS_THICKFRAME
+        | win32con.WS_MINIMIZEBOX
+        | win32con.WS_MAXIMIZEBOX
+        | win32con.WS_SYSMENU
+    )
     set_hwnd_style(hwnd, style)
-    win32gui.SetWindowPos(hwnd, win32con.HWND_TOP, 0, 0,
-                          window_size[0], window_size[1], win32con.SWP_SHOWWINDOW)
+    win32gui.SetWindowPos(
+        hwnd,
+        win32con.HWND_TOP,
+        0,
+        0,
+        window_size[0],
+        window_size[1],
+        win32con.SWP_SHOWWINDOW,
+    )
 
 
 def is_hwnd_borderless(hwnd: int) -> bool:
     old_style = get_hwnd_style(hwnd)
     new_style = old_style
-    new_style &= ~(win32con.WS_BORDER | win32con.WS_DLGFRAME | win32con.WS_THICKFRAME |
-                   win32con.WS_MINIMIZEBOX | win32con.WS_MAXIMIZEBOX | win32con.WS_SYSMENU)
+    new_style &= ~(
+        win32con.WS_BORDER
+        | win32con.WS_DLGFRAME
+        | win32con.WS_THICKFRAME
+        | win32con.WS_MINIMIZEBOX
+        | win32con.WS_MAXIMIZEBOX
+        | win32con.WS_SYSMENU
+    )
     return new_style == old_style
 
 
@@ -106,7 +130,7 @@ def set_hwnd_title(hwnd: int, text: str) -> None:
 
 def activate_hwnd(hwnd: int) -> None:
     global shell
-    shell.SendKeys('%')
+    shell.SendKeys("%")
     win32gui.ShowWindow(hwnd, 5)
     win32gui.SetForegroundWindow(hwnd)
 
@@ -136,7 +160,7 @@ def take_arg(string: str, ind: int) -> str:
         scan_ind = 1
         bsc = 0
         while scan_ind < len(sub):
-            if sub[scan_ind] == '\\':
+            if sub[scan_ind] == "\\":
                 bsc += 1
             elif sub[scan_ind] == '"':
                 if bsc % 2 == 0:
@@ -148,7 +172,7 @@ def take_arg(string: str, ind: int) -> str:
             scan_ind += 1
         if scan_ind == len(sub):
             raise  # QUOTATION WAS NOT ENDED
-        return sub[1:scan_ind].encode('utf-8').decode('unicode_escape')
+        return sub[1:scan_ind].encode("utf-8").decode("unicode_escape")
     else:
         scan_ind = 1
         while scan_ind < len(sub) and scan_ind:
@@ -160,17 +184,18 @@ def take_arg(string: str, ind: int) -> str:
 
 def get_mc_dir(pid: int) -> Union[str, None]:
     # Thanks to the creator of MoveWorlds-v0.3.ahk (probably specnr)
-    cmd = f"powershell.exe \"$proc = Get-WmiObject Win32_Process -Filter \\\"ProcessId = {str(pid)}\\\";$proc.CommandLine\""
-    p = subprocess.Popen(
-        cmd, stdout=subprocess.PIPE)
+    cmd = f'powershell.exe "$proc = Get-WmiObject Win32_Process -Filter \\"ProcessId = {str(pid)}\\";$proc.CommandLine"'
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
     response = p.communicate()[0].decode()
     if "--gameDir" in response:
         ind = response.index("--gameDir") + 10
         return take_arg(response, ind).replace("\\", "/")
-    elif "\"-Djava.library.path=" in response:
-        ind = response.index("\"-Djava.library.path=")
+    elif '"-Djava.library.path=' in response:
+        ind = response.index('"-Djava.library.path=')
         natives_path = take_arg(response, ind)[20:].replace("\\", "/")
-        return os.path.join(os.path.split(natives_path)[0], ".minecraft").replace("\\", "/")
+        return os.path.join(os.path.split(natives_path)[0], ".minecraft").replace(
+            "\\", "/"
+        )
 
 
 def get_pid_from_hwnd(hwnd: int) -> int:
@@ -187,4 +212,5 @@ def is_hwnd_fullscreen(hwnd: int) -> bool:
 
 if __name__ == "__main__":
     import os
+
     os.system("python EasyMulti.pyw")

@@ -218,10 +218,12 @@ class EasyMultiApp(tk.Tk):
         )
 
         # quit wait delay
-        if self._get_setting(self._options_json, "wait_delay") is None:
-            self._options_json["wait_delay"] = 0.1
-        self._wait_delay = self._get_setting(self._options_json, "wait_delay")
-        print(self._wait_delay)
+        if self._get_setting(self._options_json, "title_delay") is None:
+            self._options_json["title_delay"] = 0.1
+        if self._get_setting(self._options_json, "delay") is None:
+            self._options_json["delay"] = 0.07
+        self._title_delay = self._get_setting(self._options_json, "title_delay")
+        self._delay = self._get_setting(self._options_json, "delay")
         # Save
         self._save_options_json(self._options_json)
 
@@ -780,39 +782,38 @@ class EasyMultiApp(tk.Tk):
             keyboard.press_and_release("shift+tab")
         # 1.9-1.12
         elif version_major > 9:
-            time.sleep(0.07)  # Uh oh magic number
+            time.sleep(self._delay)  # Uh oh magic number
             keyboard.press_and_release("tab")
         # 1.8.9
         # no shift tab?
         elif version_major == 8 and version_minor == 9:
-            time.sleep(0.07)
+            time.sleep(self._delay)
             for i in range(7):
                 keyboard.press_and_release("tab")
         # 1.8.!9, 1.7.10
         elif version_major == 8 or (version_major == 7 and version_minor == 10):
-            time.sleep(0.07)  # Uh oh magic number
+            time.sleep(self._delay)
             keyboard.press_and_release("tab")
         # < 1.7.10, no atum
         elif version_major == 0 or 7 > version_major > 3:
-            time.sleep(0.07)
-            pause = 0.07
+            time.sleep(self._delay)
             # exit world
             keyboard.press_and_release("tab")
             keyboard.press_and_release("enter")
             # 0.07 is too little here, not sure why
             # this is prob. hardware dependent
-            time.sleep(self._wait_delay)
+            time.sleep(self._title_delay)
 
             # enter singleplayer
             keyboard.press_and_release("tab")
             keyboard.press_and_release("enter")
-            time.sleep(pause)
+            time.sleep(self._delay)
 
             # clicks new world
             for i in range(5):
                 keyboard.press_and_release("tab")
             keyboard.press_and_release("enter")
-            time.sleep(pause)
+            time.sleep(self._delay)
 
             # hover over create
             keyboard.press_and_release("tab")
